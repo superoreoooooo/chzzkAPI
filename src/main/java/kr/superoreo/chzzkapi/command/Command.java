@@ -5,6 +5,7 @@ import kr.superoreo.chzzkapi.util.ChzzkUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import xyz.r2turntrue.chzzk4j.types.channel.ChzzkChannel;
 
 import java.io.IOException;
 
@@ -55,7 +56,9 @@ public class Command implements CommandExecutor {
                 case "status" -> {
                     chzzkMgr = ChzzkMgr.getInstance();
                     sender.sendMessage(chzzkMgr.getChatOverwatchMap().size() + " chat overwatches");
-                    //for ()
+                    for (ChzzkChannel channel : chzzkMgr.getChatOverwatchMap().keySet()) {
+                        sender.sendMessage(channel.getChannelName());
+                    }
                 }
             }
         }

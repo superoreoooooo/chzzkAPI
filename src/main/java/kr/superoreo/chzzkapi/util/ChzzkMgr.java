@@ -32,6 +32,11 @@ public class ChzzkMgr {
     public boolean addChatOverWatch(String CHANNEL_ID) throws IOException {
         ChzzkChat chat;
         boolean isAdded = false;
+        for (ChzzkChannel channel : getChatOverwatchMap().keySet()) {
+            if (channel.getChannelId().equals(CHANNEL_ID)) {
+                return false;
+            }
+        }
         try {
             chat = ChzzkAPI.chzzk.chat(CHANNEL_ID)
                     .withChatListener(new ChzzkListener(CHANNEL_ID)).build();
