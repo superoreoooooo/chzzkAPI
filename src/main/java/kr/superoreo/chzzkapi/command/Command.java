@@ -23,14 +23,18 @@ public class Command implements CommandExecutor {
                 case "connect" -> {
                     if (args.length > 1) {
                         chzzkMgr = ChzzkMgr.getInstance();
-                        if (chzzkMgr.addChatOverWatch(args[1])) {
-                            try {
-                                sender.sendMessage("added!" + ChatColor.GREEN + " [" + ChzzkUtil.getChannelByID(args[1]) + "]");
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                        try {
+                            if (chzzkMgr.addChatOverWatch(args[1])) {
+                                try {
+                                    sender.sendMessage("added!" + ChatColor.GREEN + " [" + ChzzkUtil.getChannelByID(args[1]).getChannelName() + "]");
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            } else {
+                                sender.sendMessage("failed to add!" + ChatColor.RED + " [" + args[1] + "]");
                             }
-                        } else {
-                            sender.sendMessage("failed to add!" + ChatColor.RED + " [" + args[1] + "]");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
                     }
                 }
@@ -39,7 +43,7 @@ public class Command implements CommandExecutor {
                         chzzkMgr = ChzzkMgr.getInstance();
                         if (chzzkMgr.removeChatOverWatch(args[1])) {
                             try {
-                                sender.sendMessage("removed!" + ChatColor.GREEN + " [" + ChzzkUtil.getChannelByID(args[1])+ "]");
+                                sender.sendMessage("removed!" + ChatColor.GREEN + " [" + ChzzkUtil.getChannelByID(args[1]).getChannelName() + "]");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }

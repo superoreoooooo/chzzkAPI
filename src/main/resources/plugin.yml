@@ -4,4 +4,4 @@ main: kr.superoreo.chzzkapi.ChzzkAPI
 api-version: '1.21'
 commands:
   chzzk:
-    usage: '/chzzk connect <USER_NAME> \n /chzzk disconnect <USER_NAME>'
+    #usage: '/chzzk connect <USER_NAME> \n /chzzk disconnect <USER_NAME>'

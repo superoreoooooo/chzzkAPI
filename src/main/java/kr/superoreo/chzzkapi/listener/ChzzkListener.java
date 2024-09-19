@@ -37,9 +37,9 @@ public class ChzzkListener implements ChatEventListener {
 
         //ChatEventListener.super.onDonationChat(msg);
         if (msg.getProfile() == null) {
-            Bukkit.broadcastMessage("(" + channel.getChannelName() + ") [Donation] 익명: " + msg.getContent() + " [" + msg.getPayAmount() + "원]");
+            Bukkit.broadcastMessage(String.format("%-7s", "(" + channel.getChannelName() + ")") + " [Donation] 익명: " + msg.getContent() + " [" + msg.getPayAmount() + "원]");
             return;
         }
-        Bukkit.broadcastMessage("(" + channel.getChannelName() + ") [Donation] " + msg.getProfile().getNickname() + ": " + msg.getContent() + " [" + msg.getPayAmount() + "원]");
+        Bukkit.broadcastMessage(String.format("%-7s", "(" + channel.getChannelName() + ")") + " [Donation] " + msg.getProfile().getNickname() + ": " + msg.getContent() + " [" + msg.getPayAmount() + "원]");
     }
 }
