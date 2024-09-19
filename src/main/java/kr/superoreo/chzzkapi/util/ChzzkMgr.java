@@ -6,14 +6,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import xyz.r2turntrue.chzzk4j.chat.ChzzkChat;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class ChzzkMgr {
     public static ChzzkMgr instance;
 
     private ChzzkMgr() {
-        chatOverwatchList = new ArrayList<>();
+        chatOverwatchMap = new HashMap<>();
     }
 
     public static ChzzkMgr getInstance() {
@@ -24,22 +23,23 @@ public class ChzzkMgr {
         return instance;
     }
 
-    private List<ChzzkChat> chatOverwatchList;
-
-    public List<ChzzkChat> getChatOverwatchList() {
-        return chatOverwatchList;
+    public HashMap<String, ChzzkChat> getChatOverwatchMap() {
+        return chatOverwatchMap;
     }
+
+    private HashMap<String, ChzzkChat> chatOverwatchMap;
 
     public boolean addChatOverWatch(String CHANNEL_ID) {
         ChzzkChat chat;
         boolean isAdded = false;
         try {
-            chat = JavaPlugin.getPlugin(ChzzkAPI.class).chzzk.chat(CHANNEL_ID).withChatListener(new ChzzkListener()).build();
+            chat = ChzzkAPI.chzzk.chat(CHANNEL_ID)
+                    .withChatListener(new ChzzkListener(CHANNEL_ID)).build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         if (chat != null) {
-            chatOverwatchList.add(chat);
+            chatOverwatchMap.put(CHANNEL_ID, chat);
             chat.connectBlocking();
             isAdded = true;
         }
@@ -48,10 +48,10 @@ public class ChzzkMgr {
 
     public boolean removeChatOverWatch(String CHANNEL_ID) {
         boolean isRemoved = false;
-        for (ChzzkChat chat : chatOverwatchList) {
-            if (chat.getChannelId().equals(CHANNEL_ID)) {
-                chat.closeBlocking();
-                chatOverwatchList.remove(chat);
+        for (String CNLID : chatOverwatchMap.keySet()) {
+            if (CNLID.equals(CHANNEL_ID)) {
+                chatOverwatchMap.get(CNLID).closeBlocking();
+                chatOverwatchMap.remove(CNLID);
                 isRemoved = true;
             }
         }

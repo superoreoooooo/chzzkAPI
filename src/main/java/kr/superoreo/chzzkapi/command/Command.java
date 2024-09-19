@@ -1,10 +1,12 @@
 package kr.superoreo.chzzkapi.command;
 
 import kr.superoreo.chzzkapi.util.ChzzkMgr;
+import kr.superoreo.chzzkapi.util.ChzzkUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import java.io.IOException;
 
 public class Command implements CommandExecutor {
     private ChzzkMgr chzzkMgr;
@@ -22,7 +24,11 @@ public class Command implements CommandExecutor {
                     if (args.length > 1) {
                         chzzkMgr = ChzzkMgr.getInstance();
                         if (chzzkMgr.addChatOverWatch(args[1])) {
-                            sender.sendMessage("added!" + ChatColor.GREEN + " [" + args[1] + "]");
+                            try {
+                                sender.sendMessage("added!" + ChatColor.GREEN + " [" + ChzzkUtil.getChannelByID(args[1]) + "]");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         } else {
                             sender.sendMessage("failed to add!" + ChatColor.RED + " [" + args[1] + "]");
                         }
@@ -32,11 +38,20 @@ public class Command implements CommandExecutor {
                     if (args.length > 1) {
                         chzzkMgr = ChzzkMgr.getInstance();
                         if (chzzkMgr.removeChatOverWatch(args[1])) {
-                            sender.sendMessage("removed!" + ChatColor.GREEN + " [" + args[1] + "]");
+                            try {
+                                sender.sendMessage("removed!" + ChatColor.GREEN + " [" + ChzzkUtil.getChannelByID(args[1])+ "]");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         } else {
                             sender.sendMessage("failed to remove!" + ChatColor.RED + " [" + args[1] + "]");
                         }
                     }
+                }
+                case "status" -> {
+                    chzzkMgr = ChzzkMgr.getInstance();
+                    sender.sendMessage(chzzkMgr.getChatOverwatchMap().size() + " chat overwatches");
+                    //for ()
                 }
             }
         }
