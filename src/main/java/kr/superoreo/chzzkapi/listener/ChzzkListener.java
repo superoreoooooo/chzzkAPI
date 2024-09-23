@@ -34,7 +34,6 @@ public class ChzzkListener implements ChatEventListener {
 
     @Override
     public void onDonationChat(DonationMessage msg) {
-
         //ChatEventListener.super.onDonationChat(msg);
         if (msg.getProfile() == null) {
             Bukkit.broadcastMessage(String.format("%-7s", "(" + channel.getChannelName() + ")") + " [Donation] 익명: " + msg.getContent() + " [" + msg.getPayAmount() + "원]");

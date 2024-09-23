@@ -2,6 +2,7 @@ package kr.superoreo.chzzkapi.command;
 
 import kr.superoreo.chzzkapi.util.ChzzkMgr;
 import kr.superoreo.chzzkapi.util.ChzzkUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +19,6 @@ public class Command implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
-        //TODO find how to load channel id from user nickname
         if (args.length > 0) {
             switch (args[0]) {
                 case "connect" -> {
@@ -58,6 +58,33 @@ public class Command implements CommandExecutor {
                     sender.sendMessage(chzzkMgr.getChatOverwatchMap().size() + " chat overwatches");
                     for (ChzzkChannel channel : chzzkMgr.getChatOverwatchMap().keySet()) {
                         sender.sendMessage(channel.getChannelName());
+                    }
+                }
+                case "register" -> {
+                    if (args.length > 2) {
+                        chzzkMgr = ChzzkMgr.getInstance();
+                        try {
+                            if (chzzkMgr.getChatOverwatchMap().containsKey(ChzzkUtil.getChannelByID(args[1]))) {
+                                if (Bukkit.getPlayer(args[2]) != null) {
+                                    chzzkMgr.addChzzkPlayer(ChzzkUtil.getChannelByID(args[1]), Bukkit.getPlayer(args[2]));
+                                    sender.sendMessage("register complete!", ChatColor.GREEN + " [" + ChzzkUtil.getChannelByID(args[1]) + args[2] + "]");
+                                }
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+                case "unregister" -> {
+                    if (args.length > 1) {
+                        chzzkMgr = ChzzkMgr.getInstance();
+                        if (Bukkit.getPlayer(args[1]) != null) {
+                            if (chzzkMgr.removeChzzkPlayer(Bukkit.getPlayer(args[1]))) {
+                                sender.sendMessage("unregistered!" + ChatColor.GREEN + " [" + args[1] + "]");
+                            } else {
+                                sender.sendMessage("failed to unregister!" + ChatColor.RED + " [" + args[1] + "]");
+                            }
+                        }
                     }
                 }
             }
