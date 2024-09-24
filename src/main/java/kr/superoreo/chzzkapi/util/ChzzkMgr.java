@@ -3,7 +3,6 @@ package kr.superoreo.chzzkapi.util;
 import kr.superoreo.chzzkapi.ChzzkAPI;
 import kr.superoreo.chzzkapi.listener.ChzzkListener;
 import org.bukkit.entity.Player;
-import xyz.r2turntrue.chzzk4j.Chzzk;
 import xyz.r2turntrue.chzzk4j.chat.ChzzkChat;
 import xyz.r2turntrue.chzzk4j.types.channel.ChzzkChannel;
 
@@ -85,11 +84,10 @@ public class ChzzkMgr {
         return isRemoved;
     }
 
-    public boolean clearChatOverwatch() {
+    public void clearChatOverwatch() {
         Iterator<ChzzkChannel> iterator = chatOverwatchMap.keySet().iterator();
         while (iterator.hasNext()) {
             iterator.remove();
         }
-        return chatOverwatchMap.isEmpty();
     }
 }
